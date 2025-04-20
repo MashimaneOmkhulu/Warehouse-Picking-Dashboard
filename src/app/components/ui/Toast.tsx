@@ -9,6 +9,7 @@ interface Toast {
   message: string;
   type: ToastType;
   duration?: number;
+  closing?: boolean;
 }
 
 interface ToastContextType {
