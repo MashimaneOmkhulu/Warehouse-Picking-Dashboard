@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllPickers, createPicker, updatePicker, deletePicker } from '@/lib/firebase/firebaseUtils';
-import { Picker } from '@/lib/firebase/firebaseUtils';
+import { Picker } from '@/lib/types';
 
 // Helper function to check if the user is authenticated
 const getAuthenticatedUserRole = async (req: NextRequest) => {
@@ -56,7 +56,9 @@ export async function POST(req: NextRequest) {
     const newPicker = await createPicker({
       name: pickerData.name,
       target: Number(pickerData.target),
-      active: pickerData.active !== undefined ? pickerData.active : true
+      active: pickerData.active !== undefined ? pickerData.active : true,
+      linesCompleted: 0,
+      hourlyData: {}
     });
     
     return NextResponse.json(newPicker, { status: 201 });
