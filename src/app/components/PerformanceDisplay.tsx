@@ -141,7 +141,7 @@ const PerformanceDisplay = ({ state, performanceMetrics }: PerformanceDisplayPro
             <div className="bg-[#B8D8F2] p-3 rounded-lg">
               <p className="text-[#155A8A]">
                 {performanceMetrics.bestPerformer?.name ? (
-                  `${performanceMetrics.bestPerformer.name}: ${performanceMetrics.bestPerformer.performance} lines`
+                  `${performanceMetrics.bestPerformer.name}: ${performanceMetrics.bestPerformer.lines} lines`
                 ) : (
                   'No data available'
                 )}
@@ -153,7 +153,7 @@ const PerformanceDisplay = ({ state, performanceMetrics }: PerformanceDisplayPro
             <div className="bg-[#B8D8F2] p-3 rounded-lg">
               <p className="text-[#155A8A]">
                 {performanceMetrics.worstPerformer?.name ? (
-                  `${performanceMetrics.worstPerformer.name}: ${performanceMetrics.worstPerformer.performance} lines`
+                  `${performanceMetrics.worstPerformer.name}: ${performanceMetrics.worstPerformer.lines} lines`
                 ) : (
                   'No data available'
                 )}

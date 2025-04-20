@@ -1,4 +1,4 @@
-import { Picker, HourlyPerformance, PerformanceMetrics, ShiftProgress, ChartData, TopPerformer, HourlyAnalysis, Break } from '../types/warehouse';
+import { Picker, HourlyPerformance, PerformanceMetrics, ShiftProgress, ChartData, TopPerformer, HourlyAnalysis, Break, HourlyData } from '../types/warehouse';
 
 // Performance calculations
 export const getTotalLines = (picker: Picker): number => {
