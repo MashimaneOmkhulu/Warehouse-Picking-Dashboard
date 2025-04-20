@@ -137,6 +137,13 @@ const WarehouseDashboard = () => {
       try {
         setIsLoading(true);
         
+        if (!db) {
+          console.error('Firestore db is undefined');
+          setSyncStatus('error');
+          setIsLoading(false);
+          return () => {};
+        }
+        
         // Check if shared state document exists
         const sharedStateRef = doc(db, 'sharedStates', 'current');
         const sharedStateDoc = await getDoc(sharedStateRef);
@@ -230,6 +237,13 @@ const WarehouseDashboard = () => {
   const updateFirestore = async (updatedPickers: Picker[]) => {
     try {
       setSyncStatus('syncing');
+      
+      if (!db) {
+        console.error('Firestore db is undefined');
+        setSyncStatus('error');
+        addToast('Firebase not initialized', 'error');
+        return;
+      }
       
       // Use a consistent document ID for the shared state
       const sharedStateId = 'current'; // You could use a more descriptive name if needed

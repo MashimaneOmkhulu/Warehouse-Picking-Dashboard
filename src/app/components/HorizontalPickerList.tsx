@@ -60,6 +60,10 @@ const HorizontalPickerList = ({ state, onEdit, onDelete, setState }: HorizontalP
   // Separate function to sync to Firestore that doesn't affect UI state
   const syncToFirestore = async (pickers: Picker[]) => {
     try {
+      if (!db) {
+        console.error('Firestore db is undefined');
+        return;
+      }
       const sharedStateRef = doc(db, 'sharedStates', 'current');
       await updateDoc(sharedStateRef, {
         pickers: pickers,
