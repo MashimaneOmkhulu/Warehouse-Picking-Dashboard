@@ -4,7 +4,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['firebase', '@firebase/auth', '@firebase/app']
   },
-  transpilePackages: ['firebase', '@firebase/auth', '@firebase/app', '@firebase/storage'],
+  transpilePackages: ['@firebase/storage', 'lucide-react'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Don't bundle undici on the server
