@@ -218,7 +218,7 @@ export default function RaceTrack({ pickers, shiftDuration, shiftElapsed, target
                     <div className="grid grid-cols-2 gap-1 text-xs">
                       <div className="text-gray-500">Lines picked:</div>
                       <div className="text-right font-semibold">{picker.performance}</div>
-                      <div className="text-gray-500">Today's target:</div>
+                      <div className="text-gray-500">Today&apos;s target:</div>
                       <div className="text-right font-semibold">{picker.target}</div>
                       <div className="text-gray-500">Current rate:</div>
                       <div className="text-right font-semibold">{getPickerRate(picker)} lines/hr</div>

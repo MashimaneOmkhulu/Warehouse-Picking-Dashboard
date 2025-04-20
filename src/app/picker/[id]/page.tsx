@@ -195,7 +195,7 @@ const PickerPerformancePage = ({ params }: PerformancePageProps) => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Today's Performance */}
                   <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Today's Performance</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Today&apos;s Performance</h3>
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={picker.hourlyData}>

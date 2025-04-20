@@ -599,7 +599,7 @@ const EnhancedPerformanceDisplay = ({
             </div>
             
             <p className="mt-2 text-xs text-gray-600 italic">
-              The Labor Efficiency Ratio measures how close your team's total work output (line-hours) is to the ideal target. A low ratio signals systemic inefficiencies.
+              The Labor Efficiency Ratio measures how close your team&apos;s total work output (line-hours) is to the ideal target. A low ratio signals systemic inefficiencies.
             </p>
           </div>
         </div>
