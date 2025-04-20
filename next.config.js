@@ -4,15 +4,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['firebase', '@firebase/auth', '@firebase/app']
   },
-  webpack: (config) => {
-    // Fixes error with private fields in undici library
-    config.module.rules.push({
-      test: /\.js$/,
-      include: /node_modules\/undici/,
-      use: { loader: 'next-babel-loader' }
-    });
-    return config;
-  }
+  transpilePackages: ['firebase', '@firebase/auth', '@firebase/app', '@firebase/storage', 'undici']
 };
 
 module.exports = nextConfig; 
