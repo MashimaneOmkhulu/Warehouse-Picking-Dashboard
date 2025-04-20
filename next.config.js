@@ -10,6 +10,13 @@ const nextConfig = {
       // Don't bundle undici on the server
       config.externals = [...(config.externals || []), 'undici'];
     }
+    
+    // Add fallback for modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+    };
+    
     return config;
   }
 };
