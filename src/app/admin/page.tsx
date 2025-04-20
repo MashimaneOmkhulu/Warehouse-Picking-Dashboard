@@ -37,7 +37,7 @@ export default function AdminPage() {
   
   useEffect(() => {
     const fetchUsers = async () => {
-      if (!isAdmin) return;
+      if (!isAdmin || !db) return;
       
       try {
         const usersCollection = collection(db, 'users');
@@ -85,6 +85,11 @@ export default function AdminPage() {
       setShowCreateForm(false);
       
       // Refresh user list
+      if (!db) {
+        setError("Database connection not available");
+        return;
+      }
+      
       const usersCollection = collection(db, 'users');
       const snapshot = await getDocs(usersCollection);
       const usersList: User[] = [];
@@ -107,6 +112,11 @@ export default function AdminPage() {
   const handleDeleteUser = async (userId: string) => {
     if (userId === user?.uid) {
       setError('You cannot delete your own account');
+      return;
+    }
+    
+    if (!db) {
+      setError("Database connection not available");
       return;
     }
     
