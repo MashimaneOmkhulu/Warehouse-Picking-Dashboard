@@ -1,8 +1,10 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getAnalytics } from "firebase/analytics";
+'use client';
+
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
+import { Analytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,25 +24,29 @@ console.log('Firebase configuration:', {
 });
 
 // Initialize Firebase
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-console.log('Firebase initialized with app:', app.name);
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
+let storage: FirebaseStorage | undefined;
+let analytics: Analytics | null = null;
 
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-console.log('Firebase services initialized:', {
-  auth: !!auth,
-  db: !!db,
-  storage: !!storage
-});
-
-// Initialize Analytics (only in browser environment)
-let analytics = null;
+// Only initialize Firebase in the browser environment
 if (typeof window !== 'undefined') {
-  // Analytics can only be used in browser environments
+  app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+  
+  console.log('Firebase services initialized in client');
+  
+  // Initialize Analytics (only in browser environment)
   try {
-    analytics = getAnalytics(app);
+    // Dynamic import for analytics to avoid server-side issues
+    import('firebase/analytics').then(({ getAnalytics }) => {
+      if (app) {
+        analytics = getAnalytics(app);
+      }
+    });
   } catch (error) {
     console.error('Firebase Analytics failed to initialize:', error);
   }
