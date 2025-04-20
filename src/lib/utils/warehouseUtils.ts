@@ -77,7 +77,7 @@ export const getShiftProgressPercentage = (): number => {
 };
 
 // Chart data preparation
-export const prepareChartData = (pickers: Picker[], hourlyData: HourlyPerformance): ChartData[] => {
+export const prepareChartData = (pickers: Picker[], hourlyData: HourlyData[] | HourlyPerformance): ChartData[] => {
   return pickers.map(picker => ({
     name: picker.name,
     value: picker.performance,

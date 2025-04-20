@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DashboardState, TabType, Picker } from '@/lib/types/warehouse';
+import { DashboardState, TabType, Picker, HourlyData } from '@/lib/types/warehouse';
 import { calculatePerformanceMetrics, calculateShiftProgress } from '@/lib/utils/warehouseUtils';
 import HorizontalPickerList from './HorizontalPickerList';
 import RaceTrack from './RaceTrack';
@@ -176,8 +176,8 @@ const WarehouseDashboard = () => {
                 // Update hourly data based on actual picker data
                 const updatedHourlyData = Array.from({ length: 9 }, (_, i) => {
                   const hour = i + 9;
-                  const totalLinesForHour = updatedPickers.reduce((sum, picker) => {
-                    const pickerHourData = picker.hourlyData.find(h => h.hour === hour);
+                  const totalLinesForHour = updatedPickers.reduce((sum: number, picker: Picker) => {
+                    const pickerHourData = picker.hourlyData.find((h: HourlyData) => h.hour === hour);
                     return sum + (pickerHourData?.lines || 0);
                   }, 0);
                   
