@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { saveDashboardState, loadDashboardState, getDashboardStateNames, deleteDashboardState } from '@/lib/firebase/firebaseUtils';
 import { DashboardState } from '@/lib/types/warehouse';
@@ -22,34 +22,13 @@ const DashboardStateSaver: React.FC<DashboardStateSaverProps> = ({ currentState,
   const [firestoreStatus, setFirestoreStatus] = useState('Unknown');
   const [isVisible, setIsVisible] = useState(true);
 
-  // Load available states when component mounts
-  useEffect(() => {
-    if (user) {
-      fetchAvailableStates();
-      testFirestoreConnection();
-    }
-  }, [user]);
+  // Message display function
+  const showMessage = useCallback((text: string, type: 'success' | 'error') => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage({ text: '', type: '' }), 5000);
+  }, []);
 
-  // Test Firestore connection
-  const testFirestoreConnection = async () => {
-    try {
-      console.log('Testing Firestore connection...');
-      const testQuery = query(collection(db, 'dashboardStates'), limit(1));
-      const snapshot = await getDocs(testQuery);
-      console.log('Firestore connection test result:', { 
-        success: true,
-        docsReturned: snapshot.size,
-        empty: snapshot.empty
-      });
-      setFirestoreStatus('Connected');
-    } catch (error) {
-      console.error('Firestore connection test failed:', error);
-      setFirestoreStatus('Connection Failed');
-      showMessage('Firebase connection error', 'error');
-    }
-  };
-
-  const fetchAvailableStates = async () => {
+  const fetchAvailableStates = useCallback(async () => {
     if (!user) return;
     
     console.log('Fetching available states for user:', user.uid);
@@ -74,7 +53,40 @@ const DashboardStateSaver: React.FC<DashboardStateSaverProps> = ({ currentState,
       console.error('Error fetching state names:', error);
       showMessage('Failed to load saved states', 'error');
     }
-  };
+  }, [user, selectedState, showMessage]);
+
+  // Test Firestore connection
+  const testFirestoreConnection = useCallback(async () => {
+    try {
+      console.log('Testing Firestore connection...');
+      if (!db) {
+        console.error('Firestore db is undefined');
+        setFirestoreStatus('Not Initialized');
+        showMessage('Firebase not initialized', 'error');
+        return;
+      }
+      const testQuery = query(collection(db, 'dashboardStates'), limit(1));
+      const snapshot = await getDocs(testQuery);
+      console.log('Firestore connection test result:', { 
+        success: true,
+        docsReturned: snapshot.size,
+        empty: snapshot.empty
+      });
+      setFirestoreStatus('Connected');
+    } catch (error) {
+      console.error('Firestore connection test failed:', error);
+      setFirestoreStatus('Connection Failed');
+      showMessage('Firebase connection error', 'error');
+    }
+  }, [showMessage]);
+
+  // Load available states when component mounts
+  useEffect(() => {
+    if (user) {
+      fetchAvailableStates();
+      testFirestoreConnection();
+    }
+  }, [user, fetchAvailableStates, testFirestoreConnection]);
 
   // Add a function to manually check for saved states directly in Firestore
   const checkFirestoreStates = async () => {
@@ -86,6 +98,13 @@ const DashboardStateSaver: React.FC<DashboardStateSaverProps> = ({ currentState,
     setIsLoading(true);
     try {
       console.log('Directly checking Firestore for saved states...');
+      
+      if (!db) {
+        console.error('Firestore db is undefined');
+        setFirestoreStatus('Not Initialized');
+        showMessage('Firebase not initialized', 'error');
+        return;
+      }
       
       // Get a reference to the dashboardStates collection
       const statesRef = collection(db, 'dashboardStates');
@@ -357,11 +376,6 @@ const DashboardStateSaver: React.FC<DashboardStateSaverProps> = ({ currentState,
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const showMessage = (text: string, type: 'success' | 'error') => {
-    setMessage({ text, type });
-    setTimeout(() => setMessage({ text: '', type: '' }), 3000);
   };
 
   // The toggle visibility function
