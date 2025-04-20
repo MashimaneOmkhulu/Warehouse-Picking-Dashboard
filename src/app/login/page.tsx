@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/firebase';
 
@@ -31,6 +31,12 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    
+    if (!auth) {
+      setError('Authentication service not available');
+      setLoading(false);
+      return;
+    }
     
     try {
       // Use email directly
@@ -82,6 +88,12 @@ export default function LoginPage() {
       return;
     }
     
+    if (!auth || !db) {
+      setError('Authentication service not available');
+      setLoading(false);
+      return;
+    }
+    
     try {
       // Use email directly for Firebase auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -99,8 +111,8 @@ export default function LoginPage() {
         last_login: serverTimestamp()
       });
       
-      // Sign out the user after registration
-      await auth.signOut();
+      // Sign out the user after registration - using imported signOut
+      await signOut(auth);
       
       // Store credentials temporarily
       const registeredEmail = email;
