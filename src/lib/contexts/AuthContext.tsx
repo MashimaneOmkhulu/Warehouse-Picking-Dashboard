@@ -53,6 +53,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Fetch additional user data from Firestore
   const fetchUserData = async (userId: string) => {
     try {
+      if (!db) {
+        console.error("Firestore database is not initialized");
+        setUserData(null);
+        return;
+      }
+      
       const userRef = doc(db, "users", userId);
       const userSnap = await getDoc(userRef);
       
@@ -97,6 +103,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const user = result.user;
       
       // Check if user exists in our database
+      if (!db) {
+        console.error("Firestore database is not initialized");
+        throw new Error("Database not initialized");
+      }
+      
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
       
@@ -137,6 +148,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       
       // Add user to Firestore with role and additional info
+      if (!db) {
+        console.error("Firestore database is not initialized");
+        throw new Error("Database not initialized");
+      }
+      
       await setDoc(doc(db, "users", result.user.uid), {
         username,
         role,

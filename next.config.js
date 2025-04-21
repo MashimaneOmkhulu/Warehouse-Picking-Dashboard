@@ -6,9 +6,6 @@ const nextConfig = {
     if (isServer) {
       // Don't bundle undici on the server
       config.externals = [...(config.externals || []), 'undici'];
-      
-      // Add Firebase packages as external
-      config.externals.push('firebase', '@firebase/auth', '@firebase/app');
     }
     
     // Add fallback for modules

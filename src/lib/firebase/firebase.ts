@@ -24,28 +24,21 @@ console.log('Firebase configuration:', {
 });
 
 // Initialize Firebase
-let app: FirebaseApp | undefined;
-let auth: Auth | undefined;
-let db: Firestore | undefined;
-let storage: FirebaseStorage | undefined;
+const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 let analytics: Analytics | null = null;
 
-// Only initialize Firebase in the browser environment
+// Only initialize analytics in the browser environment
 if (typeof window !== 'undefined') {
-  app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  storage = getStorage(app);
-  
   console.log('Firebase services initialized in client');
   
   // Initialize Analytics (only in browser environment)
   try {
     // Dynamic import for analytics to avoid server-side issues
     import('firebase/analytics').then(({ getAnalytics }) => {
-      if (app) {
-        analytics = getAnalytics(app);
-      }
+      analytics = getAnalytics(app);
     });
   } catch (error) {
     console.error('Firebase Analytics failed to initialize:', error);
