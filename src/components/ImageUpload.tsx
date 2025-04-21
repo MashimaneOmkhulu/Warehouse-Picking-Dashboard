@@ -1,12 +1,17 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 
+// Interface for our custom icon components
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+}
+
 // Use inline SVG components instead of lucide-react
-const ImageIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const ImageIcon = ({ size = 24, ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -21,11 +26,11 @@ const ImageIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const XIcon = ({ size = 24, ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
