@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    externalDir: true, // Allow importing from external directories
-  },
-  transpilePackages: ['lucide-react'],
+  transpilePackages: ['lucide-react', 'framer-motion'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Don't bundle undici on the server
       config.externals = [...(config.externals || []), 'undici'];
+      
+      // Add Firebase packages as external
+      config.externals.push('firebase', '@firebase/auth', '@firebase/app');
     }
     
     // Add fallback for modules
