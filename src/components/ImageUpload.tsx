@@ -1,10 +1,8 @@
 import React, { useState, useRef } from "react";
-// Use dynamic imports with error handling for Lucide icons
-import dynamic from "next/dynamic";
 import Image from "next/image";
 
-// Fallback icons in case dynamic import fails
-const FallbackIcon = () => (
+// Use inline SVG components instead of lucide-react
+const ImageIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -15,6 +13,7 @@ const FallbackIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    {...props}
   >
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
     <circle cx="8.5" cy="8.5" r="1.5" />
@@ -22,7 +21,7 @@ const FallbackIcon = () => (
   </svg>
 );
 
-const FallbackXIcon = () => (
+const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -33,21 +32,11 @@ const FallbackXIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    {...props}
   >
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
-);
-
-// Dynamic imports with fallbacks
-const ImageIcon = dynamic(
-  () => import("lucide-react").then((mod) => mod.Image),
-  { ssr: false, loading: () => <FallbackIcon /> }
-);
-
-const XIcon = dynamic(
-  () => import("lucide-react").then((mod) => mod.X),
-  { ssr: false, loading: () => <FallbackXIcon /> }
 );
 
 interface ImageUploadProps {
@@ -94,7 +83,7 @@ export default function ImageUpload({ onImageChange }: ImageUploadProps) {
             onClick={removeImage}
             className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
           >
-            <XIcon size={20} />
+            <XIcon size={20} className="w-5 h-5" />
           </button>
         </div>
       ) : (

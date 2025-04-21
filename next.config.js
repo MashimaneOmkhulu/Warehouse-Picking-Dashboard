@@ -2,9 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverComponentsExternalPackages: ['firebase', '@firebase/auth', '@firebase/app']
+    externalDir: true, // Allow importing from external directories
   },
-  transpilePackages: ['@firebase/storage', 'lucide-react'],
+  transpilePackages: ['lucide-react'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Don't bundle undici on the server
